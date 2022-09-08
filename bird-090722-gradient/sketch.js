@@ -31,26 +31,28 @@ let prn = new PreRand();
 function setup() {
   createCanvas(birds.length * 200, 600);
   angleMode(DEGREES);
+  colorMode(HSB);
 
   frameRate(6);
 }
 
 function draw() {
   prn.reset();
-  background(225);
+  background(0, 0,100);
   stroke("black");
 
   testDraw();
   noLoop();
+  return;
   
-  // animateFrames();
-  // push();
-  // translate(100, 500);
-  // for (let i = 0; i < birds.length; i++) {
-  //   birds[i]();
-  //   translate(150, 0);
-  // }
-  // pop();
+  animateFrames();
+  push();
+  translate(100, 500);
+  for (let i = 0; i < birds.length; i++) {
+    birds[i]();
+    translate(150, 0);
+  }
+  pop();
   
 }
 function animateFrames() {
@@ -112,8 +114,8 @@ function body(move) {
 
   //facetw
   mEllipse(0, 0, 25, 27);
-  line(3, -5, 3, 0);
-  line(-3, -5, -3, 0);
+  mL(3, -5, 3, 0);
+  mL(-3, -5, -3, 0);
 
   //beak
   // fill(beakColor);
@@ -121,7 +123,7 @@ function body(move) {
   rotate(move ? random(80, 120) : 90);
   translate(5, -5);
   mRect(0, 0, 20, 8, 10);
-  line(0, 4, 20, 4);
+  mL(0, 4, 20, 4);
   pop();
   pop();
 
