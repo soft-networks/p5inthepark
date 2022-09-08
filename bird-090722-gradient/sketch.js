@@ -40,17 +40,17 @@ function draw() {
   background(225);
   stroke("black");
 
-  // testDraw();
-  // noLoop();
+  testDraw();
+  noLoop();
   
-  animateFrames();
-  push();
-  translate(100, 500);
-  for (let i = 0; i < birds.length; i++) {
-    birds[i]();
-    translate(150, 0);
-  }
-  pop();
+  // animateFrames();
+  // push();
+  // translate(100, 500);
+  // for (let i = 0; i < birds.length; i++) {
+  //   birds[i]();
+  //   translate(150, 0);
+  // }
+  // pop();
   
 }
 function animateFrames() {

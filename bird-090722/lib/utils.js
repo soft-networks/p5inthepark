@@ -6,6 +6,7 @@ const randHighlightColor  = () => {
   return HIGHLIGHTCOLORS[floor(rnd(0, HIGHLIGHTCOLORS.length))];
 }
 let floor = Math.floor;
+
 function distv(p1,p2) {
   return Math.hypot(p2.x - p1.x, p2.y - p1.y);
 }

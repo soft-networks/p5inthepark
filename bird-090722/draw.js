@@ -91,7 +91,8 @@ function testDraw() {
 
 function keyPressed() {
   if (key == "s") {
+    let d = new Date();
     console.log("saving");
-    saveCanvas("banner" + Date.now(), "png");
+    saveCanvas("park" + window.location.pathname + ":" + d.getHours() + "_" + d.getMinutes() + "_" + d.getSeconds(), "png");
   }
 };
