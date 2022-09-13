@@ -31,13 +31,15 @@ let prn = new PreRand();
 function setup() {
   createCanvas(birds.length * 200, 600);
   angleMode(DEGREES);
-  colorMode(HSB);
+  colorMode(HSB, 360,100, 100,100);
 
   frameRate(6);
 }
 
 function draw() {
   prn.reset();
+  clear()
+
   background(200, 20, 60);
   stroke("black");
 
@@ -52,25 +54,40 @@ function draw() {
     translate(150, 0);
   }
   pop();
+
+  makeNoise();
   
 }
 function animateFrames() {
   if (isFlapping) {
-    if (frameCount - flapStart >= 200) {
+    if (frameCount - flapStart >= 100) {
       isFlapping = false;
-      frameRate(2);
+      // frameRate(2);
     }
   } else {
     moveX += 1;
-    isFlapping = Math.random() > 0.92;
+    isFlapping = Math.random() > 0.97;
     if (isFlapping) {
-      frameRate(24);
+      // frameRate(24);
       flapStart = frameCount;
     }
   }
   push();
-  translate(width * 0.5 - moveX, 200);
+  
+  
+
+  translate(width * 0.5, 200);
+
   scale(2.0);
+
+  push();
+  translate(0, 50);
+  water();
+  pop();
+
+  translate(-moveX, 0);
+  
+  
   if (isFlapping) {
     let n = frameCount % flappingFrames.length;
     flappingFrames[n]();
@@ -81,10 +98,10 @@ function animateFrames() {
   pop();
 }
 
-function gg(hs,he, s =100, b=100) {
+function gg(hs,he, s =100, b= 90) {
   return {GRAD_COL: [[hs,s,b], [he, s,b], [0,1]]};
 }
-const WING_COLOR = gg(40,60, 20, 100);
+const WING_COLOR = gg(40,60, 20, 90);
 
 function body(move) {
   
@@ -130,6 +147,7 @@ function body(move) {
   mL(0, 4, 20, 4, gg(50,50));
   pop();
   pop();
+
 
 }
 
@@ -306,4 +324,27 @@ function bird5() {
   pop();
 
   pop();
+}
+
+
+function makeNoise() {
+
+  for (let i =0 ; i< rn(100,200); i++) {
+    let ll = 2;
+    let p = prn.rn();
+    if (p > 0.5) {
+      let p0 = [rn(0, width), rn(0, height)];
+      let p1 = [p0[0] + rnd(-ll,ll), p0[1] + rnd(-ll,ll)];
+      mL(p0[0], p0[1], p1[0], p1[1], {GRAD_COL: undefined, RAND_COL: [[100,100,30]]});
+    }
+  }
+}
+
+function water() {
+  for (let i=0 ; i<5; i++) {
+    push();
+    // rotate(rn(0,20));
+    mEllipse(0,0, rn(50,200), rn(30, 50), {...gg(200, 220, 100, 100), FILL_COL: [220, 50,100, 30]});
+    pop();
+  }
 }
