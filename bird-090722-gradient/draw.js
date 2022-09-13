@@ -1,10 +1,11 @@
 //Gradient focus
+
 const PREFS = {
-  LINE_LENGTH: 5,
+  LINE_LENGTH: 10,
   RAND_STROKE: [1,2],
-  RAND_ROT: [0,10],
+  RAND_ROT: [-5,5],
   RAND_COL: ["black", "rgb(10,10,10)"],
-  GRAD_COL: [[100,100, 100], [200,100,100], [0,1]], //for now this always has to kinda be [0,1] because any other version doesnt really work
+  GRAD_COL: [[0,90, 100], [360,90,100], [0.1, 0.5]], //for now this always has to kinda be [0,1] because any other version doesnt really work
   OVERDRAW: 2,
 };
 
@@ -26,7 +27,7 @@ function mEllipse(x0, y0, w, h, prefs ) {
 }
 function mRect(x1, y1, w, h, prefs) {
   let bounds = [cv(x1,y1), cv(x1 + w, y1), cv(x1 + w, y1+h), cv(x1, y1+h)];
-  mPoly(bounds, prefs, w+h);
+  mPoly(bounds, prefs, 2*(w+h));
 }
 function mTri(x1, y1, x2, y2, x3, y3, prefs) {
   let bounds = [cv(x1,y1), cv(x2,y2), cv(x3,y3)];
@@ -42,8 +43,12 @@ function mPoly(bounds, prefs, size) {
     for (let i =0; i< bounds.length; i++) {
       let p0 = bounds[i];
       let p1 = bounds[(i+1) % bounds.length];
-      let myLength = distv(p0,p1);
-      let myGrad = [GRAD_COL[0], GRAD_COL[1], [ lengthCovered / s, (lengthCovered + myLength) / s]];
+      let myLength = distv(p0,p1)
+
+      let [ls, le] = GRAD_COL[2];
+      const lerpSub = [map(lengthCovered, 0, s, ls, le), map(lengthCovered + myLength, 0, s, ls,le)];
+      let myGrad = [GRAD_COL[0], GRAD_COL[1], lerpSub];
+      // let myGrad = [GRAD_COL[0], GRAD_COL[1], [ lengthCovered / s, (lengthCovered + myLength) / s]];
       mL(p0.x,p0.y, p1.x, p1.y, {...prefs, GRAD_COL: myGrad});
       lengthCovered +=myLength;
     }
@@ -98,21 +103,21 @@ function testDraw() {
   translate(100, 100);
   mL(0, 0, 50, 50);
 
-  // push();
-  // stroke("red");
-  // point(0, 0);
-  // point(50, 50);
-  // pop();
+  push();
+  stroke("red");
+  point(0, 0);
+  point(50, 50);
+  pop();
 
-  //   translate(75, 0);
-  //   mRect(0, 0, 50, 50);
+    translate(75, 0);
+    mRect(0, 0, 50, 50);
   
     translate(75, 0);
     mEllipse(25, 25, 50, 50, {LINE_LENGTH: 5, OVERDRAW: undefined});
   
-    // translate(75, 0);
-    // mTri(0, 0, 50, 50, 0, 50);
-    // pop();
+    translate(75, 0);
+    mTri(0, 0, 50, 50, 0, 50);
+    pop();
   
 }
 

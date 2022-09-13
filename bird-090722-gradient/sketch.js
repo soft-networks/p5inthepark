@@ -38,12 +38,11 @@ function setup() {
 
 function draw() {
   prn.reset();
-  background(0, 0,100);
+  background(200, 20, 60);
   stroke("black");
 
   testDraw();
-  noLoop();
-  return;
+  // noLoop();
   
   animateFrames();
   push();
@@ -57,13 +56,13 @@ function draw() {
 }
 function animateFrames() {
   if (isFlapping) {
-    if (frameCount - flapStart >= 100) {
+    if (frameCount - flapStart >= 200) {
       isFlapping = false;
       frameRate(2);
     }
   } else {
     moveX += 1;
-    isFlapping = Math.random() > 0.92;
+    isFlapping = Math.random() > 0.97;
     if (isFlapping) {
       frameRate(24);
       flapStart = frameCount;
@@ -76,30 +75,35 @@ function animateFrames() {
     let n = frameCount % flappingFrames.length;
     flappingFrames[n]();
   } else {
-    
     let n = frameCount % regularFrames.length;
     regularFrames[n]();
   }
   pop();
 }
 
+function gg(hs,he, s =100, b=100) {
+  return {GRAD_COL: [[hs,s,b], [he, s,b], [0,1]]};
+}
+const WING_COLOR = gg(40,60, 20, 100);
+
 function body(move) {
   
   //legs
+  
   push();
   // fill(legColor);
   rotate(move ? random(0, 5): 3)
   translate(0, 20);
-  mTri(0, 0, 10, 0, 5, 25);
+  mTri(0, 0, 10, 0, 5, 25, gg(40,60));
   
   rotate(move ? random(-10, -20) : -15);
   translate(10, 0);
-  mTri(0, 0, 10, 0, 5, 25);
+  mTri(0, 0, 10, 0, 5, 25, gg(40,60));
   pop();
 
   //body
   // fill(bodyColor);
-  mEllipse(0, 0, 80, 50);
+  mEllipse(0, 0, 80, 50, gg(40,60));
 
   //head
   push();
@@ -109,21 +113,21 @@ function body(move) {
   //neck
   push();
   translate(7, -8);
-  mTri(0, 0, 0, 52, 20, 52);
+  mTri(0, 0, 0, 52, 20, 52, gg(40,60, 90, 70));
   pop();
 
   //facetw
-  mEllipse(0, 0, 25, 27);
-  mL(3, -5, 3, 0);
-  mL(-3, -5, -3, 0);
+  mEllipse(0, 0, 25, 27, gg(40,60,90,70));
+  mL(3, -5, 3, 0, gg(40,50, 0, 0));
+  mL(-3, -5, -3, 0, gg(40,50,0,0));
 
   //beak
   // fill(beakColor);
   push();
   rotate(move ? random(80, 120) : 90);
   translate(5, -5);
-  mRect(0, 0, 20, 8, 10);
-  mL(0, 4, 20, 4);
+  mRect(0, 0, 20, 8, gg(50,50));
+  mL(0, 4, 20, 4, gg(50,50));
   pop();
   pop();
 
@@ -139,7 +143,7 @@ function bird0() {
   // fill(wingColor);
   translate(-20, 20);
   rotate(random(200,210));
-  mRect(0, 0, 30, 40);
+  mRect(0, 0, 30, 40, WING_COLOR);
   pop();
   
   body(true);
@@ -150,7 +154,7 @@ function bird0() {
   // fill(wingColor);
   translate(0, -25);
   rotate(random(-43, -47));
-  mRect(0, 0, 30, 40);
+  mRect(0, 0, 30, 40, WING_COLOR);
   pop();
   
   pop();
@@ -164,7 +168,7 @@ function bird1() {
   push();
   // fill(wingColor);
   translate(-40, -10);
-  mRect(0, 0, 20, 30);
+  mRect(0, 0, 20, 30, WING_COLOR);
   pop();
 
   body();
@@ -174,9 +178,9 @@ function bird1() {
   // fill(wingColor);
   translate(0, -25);
   rotate(10);
-  mRect(0, 0, 40, 30);
+  mRect(0, 0, 40, 30, WING_COLOR);
   translate(40, 0);
-  mTri(0, 0, 0, 30, 30, 30);
+  mTri(0, 0, 0, 30, 30, 30, WING_COLOR);
   pop();
 
   pop();
@@ -192,7 +196,7 @@ function bird2() {
   // fill(wingColor);
   translate(-50, -20);
   rotate(10);
-  mRect(0, 0, 30, 30);
+  mRect(0, 0, 30, 30, WING_COLOR);
   pop();
 
   body();
@@ -202,9 +206,9 @@ function bird2() {
   // fill(wingColor);
   translate(0, -25);
   rotate(-20);
-  mRect(0, 0, 60, 35);
+  mRect(0, 0, 60, 35, WING_COLOR);
   translate(35, 35);
-  mTri(0, 0, 25, 0, 0, 35);
+  mTri(0, 0, 25, 0, 0, 35, WING_COLOR);
   pop();
 
   pop();
@@ -220,9 +224,9 @@ function bird3() {
   // fill(wingColor);
   translate(-20, 10);
   rotate(200);
-  mRect(0, 0, 60, 30);
+  mRect(0, 0, 60, 30, WING_COLOR);
   translate(60, 0);
-  mTri(0, 0, 40, 0, 0, 30);
+  mTri(0, 0, 40, 0, 0, 30, WING_COLOR);
   pop();
 
   body();
@@ -232,9 +236,9 @@ function bird3() {
   // fill(wingColor);
   translate(0, -25);
   rotate(-20);
-  mRect(0, 0, 50, 30);
+  mRect(0, 0, 50, 30, WING_COLOR);
   translate(50, 0);
-  mTri(0, 0, 40, 0, 0, 30);
+  mTri(0, 0, 40, 0, 0, 30, WING_COLOR);
   pop();
 
   pop();
@@ -250,10 +254,10 @@ function bird4() {
   // fill(wingColor);
   translate(-20, 10);
   rotate(200);
-  mRect(0, 0, 60, 25);
+  mRect(0, 0, 60, 25, WING_COLOR);
   translate(35, 0);
   rotate(-45);
-  mTri(0, 0, 60, 0, 0, 35);
+  mTri(0, 0, 60, 0, 0, 35, WING_COLOR);
   pop();
 
   body();
@@ -263,10 +267,10 @@ function bird4() {
   // fill(wingColor);
   translate(0, -25);
   rotate(-20);
-  mRect(0, 0, 60, 25);
+  mRect(0, 0, 60, 25, WING_COLOR);
   translate(60, 0);
   rotate(45);
-  mTri(0, 0, 60, 0, 0, 35);
+  mTri(0, 0, 60, 0, 0, 35, WING_COLOR);
   pop();
 
   pop();
@@ -282,9 +286,9 @@ function bird5() {
   // fill(wingColor);
   translate(-10, 20);
   rotate(200);
-  mRect(0, 0, 60, 45);
+  mRect(0, 0, 60, 45, WING_COLOR);
   translate(60, 0);
-  mTri(0, 0, 45, 0, 0, 45);
+  mTri(0, 0, 45, 0, 0, 45, WING_COLOR);
   pop();
 
   body();
@@ -294,10 +298,10 @@ function bird5() {
   // fill(wingColor);
   translate(0, -25);
   rotate(random(-40, -50));
-  mRect(0, 0, 50, 40);
+  mRect(0, 0, 50, 40, WING_COLOR);
   translate(70, 0);
   rotate(random(85, 95));
-  mTri(0, 0, 60, 0, 0, 60);
+  mTri(0, 0, 60, 0, 0, 60, WING_COLOR);
 
   pop();
 
