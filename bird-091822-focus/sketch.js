@@ -66,12 +66,17 @@ function draw() {
   
 }
 function animateFrames() {
+  if (dist(mouseX, mouseY, width/2, height/2) < ww/2) {
+    isFlapping = true;
+  } else {
+    isFlapping = false;
+  }
   if (isFlapping) {
     falseFrameCount += 1;
-    if (falseFrameCount - flapStart >= 100) {
-      isFlapping = false;
-      // frameRate(2);
-    }
+    // if (falseFrameCount - flapStart >= 100) {
+    //   isFlapping = false;
+    //   // frameRate(2);
+    // }
   } else {
     if (frameCount % 2 == 0) {
       falseFrameCount += 1
@@ -81,7 +86,7 @@ function animateFrames() {
       } if (moveX < -ww/2) {
         direction = +1;
       }
-      isFlapping = Math.random() > 0.99;
+     
       if (isFlapping) {
         // frameRate(24);
         flapStart = falseFrameCount;
