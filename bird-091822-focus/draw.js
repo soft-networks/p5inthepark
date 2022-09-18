@@ -1,22 +1,24 @@
 //Gradient focus
 
+
+
 const PREFS = {
   LINE_LENGTH: 10,
-  RAND_STROKE: [1,2],
+  RAND_STROKE: [1,3],
   RAND_ROT: [-5,5],
   RAND_COL: ["black", "rgb(10,10,10)"],
   GRAD_COL: [[0,90, 100], [360,90,100], [0.1, 0.5]], //for now this always has to kinda be [0,1] because any other version doesnt really work
   OVERDRAW: 2,
-  FILL_COL: [200, 0, 100]
+  FILL_COL: [200, 5, 100]
 };
 
 //NOTE: that in then shape functions , i make it so that the grad_color is controlled on a per SHAPE basis (ie: changes along the shape) rather than line
 //This can be changed back by just removing the shape grad_color code
-function mEllipse(x0, y0, w, h, prefs ) {
+function mEllipse(x0, y0, w, h, prefs , steps) {
   let {GRAD_COL, LINE_LENGTH} = {...sp(prefs)};
   let circ = PI * (w/2 + h/2);
-  let polygonSides = circ / LINE_LENGTH;
-  let step = TAU / polygonSides;
+  let polygonSides = steps || circ / LINE_LENGTH;
+  let step = TAU / polygonSides ;
   let bounds = [];
   //Note that this method is less efficient, but it allows us to use mPoly which is nice
   for (let t = 0; t <= TAU; t += step) {
@@ -52,7 +54,7 @@ function mPoly(bounds, prefs, size) {
       const lerpSub = [map(lengthCovered, 0, s, ls, le), map(lengthCovered + myLength, 0, s, ls,le)];
       let myGrad = [GRAD_COL[0], GRAD_COL[1], lerpSub];
       // let myGrad = [GRAD_COL[0], GRAD_COL[1], [ lengthCovered / s, (lengthCovered + myLength) / s]];
-      mL(p0.x,p0.y, p1.x, p1.y, {...prefs, GRAD_COL: myGrad});
+      mL(p0.x ,p0.y , p1.x, p1.y, {...prefs, GRAD_COL: myGrad});
       lengthCovered +=myLength;
     }
   } else {
@@ -98,7 +100,7 @@ function mL(x1, y1, x2, y2, prefs) {
         stroke(r,g,b);
       }
       if (RAND_STROKE) strokeWeight(prn.rn(RAND_STROKE[0], RAND_STROKE[1]));
-      if (RAND_ROT) rotate(prn.rn(RAND_ROT[0], RAND_ROT[1]));
+      if (RAND_ROT && covered !== step) rotate(prn.rn(RAND_ROT[0], RAND_ROT[1]));
       line(c1.x, c1.y, c2.x, c2.y);
       pop();
       c1 = c2;

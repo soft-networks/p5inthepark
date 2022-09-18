@@ -6,10 +6,31 @@ const randHighlightColor  = () => {
   return HIGHLIGHTCOLORS[floor(rnd(0, HIGHLIGHTCOLORS.length))];
 }
 let floor = Math.floor;
+function lerpCol(c1, c2, t, lerpRange = [0,1]) {
+  const newLerp = (t * (lerpRange[1] - lerpRange[0])) + lerpRange[0];
+  return [
+    lerp(c1[0], c2[0], newLerp),
+    lerp(c1[1], c2[1], newLerp),
+    lerp(c1[2], c2[2], newLerp),
+  ];
+}
+
+function boundaryLength(bounds) {
+  let runningLength = 0;
+  for (let i =0; i< bounds.length; i++) {
+    let p0 = bounds[i];
+    let p1 = bounds[(i+1)% bounds.length ];
+    runningLength += distv(p0,p1);
+  }
+  return runningLength;
+}
+
+function sp(prefs = {}) {
+  return {...PREFS, ...prefs}
+}
 function distv(p1,p2) {
   return Math.hypot(p2.x - p1.x, p2.y - p1.y);
 }
-
 function cv(x, y , z ) {
   return { x: x || 0, y: y ||0 , z: z ||0};
 }
@@ -23,6 +44,12 @@ function subv(v1, v2) {
   return cv(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
 }
 
+function avg(arr) {
+  let sum = 0;
+  arr.forEach(n => sum += n);
+  let a = sum/arr.length;
+  return a;
+}
 function mulv(v, m) {
   return cv(v.x * m, v.y * m, v.z * m);
 }

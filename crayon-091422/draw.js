@@ -1,13 +1,13 @@
 //Gradient focus
 
 const PREFS = {
-  LINE_LENGTH: 10,
-  RAND_STROKE: [1,2],
-  RAND_ROT: [-5,5],
-  RAND_COL: ["black", "rgb(10,10,10)"],
-  GRAD_COL: [[0,90, 100], [360,90,100], [0.1, 0.5]], //for now this always has to kinda be [0,1] because any other version doesnt really work
-  OVERDRAW: 2,
-  FILL_COL: [200, 0, 100]
+  LINE_LENGTH: 20,
+  RAND_STROKE: [5,7],
+  RAND_ROT: [-3,3],
+  RAND_COL: undefined,
+  GRAD_COL: undefined, //for now this always has to kinda be [0,1] because any other version doesnt really work
+  OVERDRAW: undefined,
+  FILL_COL: undefined
 };
 
 //NOTE: that in then shape functions , i make it so that the grad_color is controlled on a per SHAPE basis (ie: changes along the shape) rather than line
@@ -28,14 +28,15 @@ function mEllipse(x0, y0, w, h, prefs ) {
 }
 function mRect(x1, y1, w, h, prefs) {
   let bounds = [cv(x1,y1), cv(x1 + w, y1), cv(x1 + w, y1+h), cv(x1, y1+h)];
-  mPoly(bounds, prefs, 2*(w+h));
+
+  fillRect(x1,y1, w, h);
 }
 function mTri(x1, y1, x2, y2, x3, y3, prefs) {
   let bounds = [cv(x1,y1), cv(x2,y2), cv(x3,y3)];
   mPoly(bounds, prefs);
 }
 function mPoly(bounds, prefs, size) {
-  let {GRAD_COL, FILL_COL} = {...sp(prefs)};
+  let {GRAD_COL, FILL_COL, STROKE_COL} = {...sp(prefs)};
   if (FILL_COL) {
     fillPoly(bounds, FILL_COL)
   }
@@ -59,6 +60,7 @@ function mPoly(bounds, prefs, size) {
     for (let i =0; i< bounds.length; i++) {
       let p0 = bounds[i];
       let p1 = bounds[(i+1) % bounds.length];
+      // if (STROKE_COL) stroke(STROKE_COL);
       mL(p0.x,p0.y, p1.x, p1.y, prefs);
     }
   }
@@ -115,7 +117,7 @@ function mL(x1, y1, x2, y2, prefs) {
 
 function testDraw() {
   push();
-  translate(100, 100);
+  translate(50, 100);
   mL(0, 0, 50, 50);
 
   push();
@@ -124,16 +126,42 @@ function testDraw() {
   point(50, 50);
   pop();
 
-    translate(75, 0);
-    mRect(0, 0, 50, 50);
-  
-    translate(75, 0);
-    mEllipse(25, 25, 50, 50, {LINE_LENGTH: 5, OVERDRAW: undefined});
-  
-    translate(75, 0);
-    mTri(0, 0, 50, 50, 0, 50);
-    pop();
-  
+  translate(75, 0);
+  mRect(0, 0, 50, 50);
+
+  translate(75, 0);
+  mEllipse(25, 25, 50, 50, {LINE_LENGTH: 5, OVERDRAW: undefined});
+
+  translate(75, 0);
+  mTri(0, 0, 50, 50, 0, 50);
+
+  translate(75,0);
+  fillRect(0,0,50,50);
+
+
+  pop();
+
+
+}
+
+
+
+const FILL_PREFS = {
+  LINE_LENGTH: 30,
+  RAND_STROKE: [3,5],
+  RAND_COL: [[0,0,0, 60]]
+}
+function fillRect(x,y,w,h, PREFS = {}) {
+  let { RAND_STROKE, DISTORT_LENGTH} = {...FILL_PREFS, ...PREFS};
+  if (! RAND_STROKE) RAND_STROKE = [1,1]; 
+
+  push();
+  translate(x,y);
+  let ah = avg(RAND_STROKE);
+  for (let i =0; i<h; i+= ah) {
+    mL(0, i, w , i );
+  }
+  pop();
 }
 
 function keyPressed() {
