@@ -88,13 +88,16 @@ function mPoly(bounds, prefs , size) {
 } 
 function polyMask(bounds, prefs) {
   function fillIntoCanvas(cnv, c = "black") {
-    cnv.beginShape();
+    cnv.push();
+    cnv.noStroke();
     cnv.fill(c)
+    cnv.beginShape();
     for (let i =0; i<bounds.length; i++) {
       let current = bounds[i];
       cnv.vertex(current.x, current.y);
     }
     cnv.endShape(CLOSE);
+    cnv.pop();
   }
   fillIntoCanvas(maskCanvas);
   if (prefs.foregroundFill) {
